@@ -3,9 +3,8 @@
     <div class="map-container" ref="myEchart"></div>
     <div id="small" ref="smallEchart"></div>
     <div class="xz" ref="xz"></div>
-    <div id="div" >
-      <!-- 这里没写抬起事件,你怎么触发的 我参考的右边你给我发的模板写的啊 -->
-      <img id="img" src="../assets/dt.jpg" alt="" @mousewheel="zoom" @mousedown="mousedown" />
+    <div id="div">
+      <img id="img" src="../assets/dt.jpg" alt="" @mousewheel="zoom" @click="mousedown"/>
     </div>
   </div>
 </template>
@@ -582,9 +581,9 @@ export default {
     },
    
     mousedown(e) {
-      console.log(e)
       var img = document.getElementById('img') 
-      var div = document.getElementById('div') 
+      var div = document.getElementById('div')
+      img.onmousedown = function(e){
       e = e || window.event;
       //按下的时候获取元素的初始位置和鼠标的初始位置
       var eleX = img.offsetLeft;
@@ -593,7 +592,8 @@ export default {
 		  var startY = e.clientY;
       //全局捕获
       img.setCapture&&img.setCapture();
-      document.onmousemove=function(e){
+      document.onmousemove = function(e){
+        e = e || window.event;
         //可以获取鼠标的结束位置
 				var endX = e.clientX;
 				var endY = e.clientY;
@@ -610,7 +610,9 @@ export default {
       document.onmouseup = function(){
 					document.onmousemove = document.onmouseup = null;
 					img.releaseCapture&&img.releaseCapture();//低版本浏览器释放全局捕获
-				}
+        }
+        return false
+      }
     }
   },
   mounted() {
