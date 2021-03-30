@@ -3,9 +3,15 @@
     <div class="map-container" ref="myEchart"></div>
     <div id="small" ref="smallEchart"></div>
     <div class="xz" ref="xz"></div>
-    <div id="div" >
+    <div id="div">
       <!-- 这里没写抬起事件,你怎么触发的 我参考的右边你给我发的模板写的啊 -->
-      <img id="img" src="../assets/dt.jpg" alt="" @mousewheel="zoom" @mousedown="mousedown" />
+      <img
+        id="img"
+        src="../assets/dt.jpg"
+        alt=""
+        @mousewheel="zoom"
+        @mousedown="mousedown"
+      />
     </div>
   </div>
 </template>
@@ -133,8 +139,8 @@ export default {
       ],
       planePath: 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z',
       zoomVal: 1,
-      zoomX:null,
-      zoomY:null
+      zoomX: null,
+      zoomY: null
     }
   },
   methods: {
@@ -576,41 +582,41 @@ export default {
           this.zoomVal = 1
         }
       }
-      o.style.transformOrigin=[this.zoomX,this.zoomY]
+      o.style.transformOrigin = [this.zoomX, this.zoomY]
       o.style.transform = "scale(" + this.zoomVal + ")";
-     
+
     },
-   
+
     mousedown(e) {
-      console.log(e)
-      var img = document.getElementById('img') 
-      var div = document.getElementById('div') 
+      var img = document.getElementById('img')
       e = e || window.event;
       //按下的时候获取元素的初始位置和鼠标的初始位置
       var eleX = img.offsetLeft;
-		  var eleY = img.offsetTop;
-		  var startX = e.clientX;
-		  var startY = e.clientY;
+      var eleY = img.offsetTop;
+      var startX = e.clientX;
+      var startY = e.clientY;
       //全局捕获
-      img.setCapture&&img.setCapture();
-      document.onmousemove=function(e){
+      img.setCapture && img.setCapture();
+      document.onmousemove = function (e) {
         //可以获取鼠标的结束位置
-				var endX = e.clientX;
-				var endY = e.clientY;
+        var endX = e.clientX;
+        var endY = e.clientY;
+        console.log(endX)
         //求出鼠标的距离差
-				var disX = endX - startX;
-				var disY = endY - startY;
+        var disX = endX - startX;
+        var disY = endY - startY;
         //求出元素移动的最终位置  =  元素的初始位置  + 鼠标的距离差
-				var lastX = eleX + disX;
-				var lastY = eleY + disY;
+        var lastX = eleX + disX;
+        var lastY = eleY + disY;
         //把求出来的最终位置设置给元素
-				img.style.left = lastX + 'px';
-				img.style.top = lastY + 'px';
+        img.style.left = lastX + 'px';
+        img.style.top = lastY + 'px';
       }
-      document.onmouseup = function(){
-					document.onmousemove = document.onmouseup = null;
-					img.releaseCapture&&img.releaseCapture();//低版本浏览器释放全局捕获
-				}
+      document.onmouseup  = function () {
+        console.log('抬起了')
+        document.onmousemove = document.onmouseup = null;
+        img.releaseCapture && img.releaseCapture();//低版本浏览器释放全局捕获
+      }
     }
   },
   mounted() {
