@@ -3,8 +3,9 @@
     <div class="map-container" ref="myEchart"></div>
     <div id="small" ref="smallEchart"></div>
     <div class="xz" ref="xz"></div>
-    <div id="div" @mousewheel="zoom">
-      <img id="img" src="../assets/dt.jpg" alt="" @mousedown="mousedown" @mousemove="move"/>
+    <div id="div" >
+      <!-- 这里没写抬起事件,你怎么触发的 我参考的右边你给我发的模板写的啊 -->
+      <img id="img" src="../assets/dt.jpg" alt="" @mousewheel="zoom" @mousedown="mousedown" />
     </div>
   </div>
 </template>
@@ -577,23 +578,20 @@ export default {
       }
       o.style.transformOrigin=[this.zoomX,this.zoomY]
       o.style.transform = "scale(" + this.zoomVal + ")";
-      // if (params.zoomVal >= 0.2) {
-      //   o.style.transform = "scale(" + params.zoomVal + ")";
-      // } else {
-      //   params.zoomVal = 0.2;
-      //   o.style.transform = "scale(" + params.zoomVal + ")";
-      //   return false;
-      // }
+     
     },
    
     mousedown(e) {
-      var img = document.getElementById('img')
-      var div=document.getElementById('div')
+      console.log(e)
+      var img = document.getElementById('img') 
+      var div = document.getElementById('div') 
+      e = e || window.event;
       //按下的时候获取元素的初始位置和鼠标的初始位置
       var eleX = img.offsetLeft;
 		  var eleY = img.offsetTop;
 		  var startX = e.clientX;
 		  var startY = e.clientY;
+      //全局捕获
       img.setCapture&&img.setCapture();
       document.onmousemove=function(e){
         //可以获取鼠标的结束位置
@@ -608,17 +606,11 @@ export default {
         //把求出来的最终位置设置给元素
 				img.style.left = lastX + 'px';
 				img.style.top = lastY + 'px';
-        document.onmouseup = function(){
-          console.log(document.onmousemove)
+      }
+      document.onmouseup = function(){
 					document.onmousemove = document.onmouseup = null;
 					img.releaseCapture&&img.releaseCapture();//低版本浏览器释放全局捕获
 				}
-      }
-    },
-    move(e){
-      this.zoomX=e.offsetLeft+'px'
-      this.zoomY=e.offsetTop+'px'
-      // console.log(e)
     }
   },
   mounted() {
