@@ -48,7 +48,8 @@ export default {
           roam: false,
           // 图形上的文本标签
           label: {
-            show: true // 是否显示对应地名
+            show: false, // 是否显示对应地名
+            
           },
           // 地图区域的多边形 图形样式
           itemStyle: {
@@ -59,24 +60,18 @@ export default {
             emphasis: {
               areaColor: '#2B91B7',
             }
-          },
-          // // 高亮状态下的多边形和标签样式
-          // emphasis: {
-          //   label: {
-          //     show: true, // 是否显示标签
-          //     color: '#fff' // 文字的颜色 如果设置为 'auto'，则为视觉映射得到的颜色，如系列色
-          //   },
-          //   itemStyle: {
-          //     areaColor: '#aeaeae' // 地图区域的颜色
-          //   }
-          // }
+          }
         },
         series: [{
           type: 'map',
           map: null,
           roam: false,
+          lable:{
+            show:false,
+           
+          },
           itemStyle: {
-            normal: { label: { show: true } },
+            normal: { label: { show: false } },
             emphasis: { label: { show: true } }
           }
         }]
@@ -359,6 +354,7 @@ export default {
       };
       myEchart.setOption(option);
       myEchart.on('click', function (params) {
+        console.log(params)
         let smallEchart = echarts.init(document.getElementById('small'))
         switch (params.name) {
           case '内蒙古': {
@@ -557,7 +553,7 @@ export default {
     },
     // 图片跟随滚轮的放大缩小
     zoom(event) {
-      console.log('###############', event.wheelDelta)
+      // console.log('###############', event.wheelDelta)
       var o = document.getElementsByTagName("img")[0]
       var params = {
         zoomVal: 3,
@@ -577,9 +573,10 @@ export default {
           this.zoomVal = 1
         }
       }
-      o.style.transformOrigin = [this.zoomX, this.zoomY]
+      // 缩放的原点
+      // o.style.transformOrigin = [this.zoomX, this.zoomY]
       o.style.transform = "scale(" + this.zoomVal + ")";
-
+      
     },
 
     mousedown() {
@@ -623,6 +620,7 @@ export default {
     this.mousedown()
     this.map()
     this.xz()
+   
   }
 }
 </script>
@@ -670,8 +668,8 @@ export default {
 }
 #div img {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 300px;
+  height: 300px;
   /* margin-left: 50%; */
   /* transform: translateX(-50%) translateY(-50%); */
   /* margin-top: 50%; */
